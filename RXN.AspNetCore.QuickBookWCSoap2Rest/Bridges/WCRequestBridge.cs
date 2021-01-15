@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿// Copyright (C) 2013-2020 Retail Exchange Network, Inc. All rights reserved.
+using Microsoft.AspNetCore.Http;
 using RXN.AspNetCore.QuickBookWCSoap2Rest.Utils;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using System.Xml;
 
 namespace RXN.AspNetCore.QuickBookWCSoap2Rest.Bridges
@@ -47,28 +50,39 @@ namespace RXN.AspNetCore.QuickBookWCSoap2Rest.Bridges
 
         private void ParseBody(Stream body)
         {
-            string rawBody = null;
-
-            using (var reader = new StreamReader(body))
+            try
             {
-                rawBody = reader.ReadToEnd();
-            }
+                string rawBody = null;
 
-            if (!string.IsNullOrEmpty(rawBody))
-            {
-                var xmlBody = new XmlDocument();
-                xmlBody.LoadXml(rawBody);
-
-                var soapBodyContent = xmlBody.GetElementsByTagName("soap:Body").Item(0).FirstChild;
-                _skeletonAction = MatchingSkeletonActionMethod(soapBodyContent.Name);
-
-                if (soapBodyContent.HasChildNodes)
+                using (var reader = new StreamReader(body))
                 {
-                    foreach (XmlNode node in soapBodyContent.ChildNodes)
+                    var promiseReading = reader.ReadToEndAsync();
+                    if (promiseReading.IsCompletedSuccessfully)
                     {
-                        _requestParams.Add(node.Name.Trim(), node.InnerText.Trim());
+                        rawBody = promiseReading.Result;
                     }
                 }
+
+                if (!string.IsNullOrEmpty(rawBody))
+                {
+                    var xmlBody = new XmlDocument();
+                    xmlBody.LoadXml(rawBody);
+
+                    var soapBodyContent = xmlBody.GetElementsByTagName("soap:Body").Item(0).FirstChild;
+                    _skeletonAction = MatchingSkeletonActionMethod(soapBodyContent.Name);
+
+                    if (soapBodyContent.HasChildNodes)
+                    {
+                        foreach (XmlNode node in soapBodyContent.ChildNodes)
+                        {
+                            _requestParams.Add(node.Name.Trim(), node.InnerText.Trim());
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
             }
         }
 
