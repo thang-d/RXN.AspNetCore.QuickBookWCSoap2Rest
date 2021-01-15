@@ -10,6 +10,7 @@
     <PackageProjectUrl>https://github.com/thangl3/RXN.AspNetCore.QuickBookWCSoap2Rest</PackageProjectUrl>
     <PackageTags>QBWCXML, QBXML Quickbook, QuickBookDesktop</PackageTags>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
