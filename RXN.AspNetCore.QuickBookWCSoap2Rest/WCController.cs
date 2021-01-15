@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using RXN.AspNetCore.QuickBookWCSoap2Rest.Bridges;
 using RXN.AspNetCore.QuickBookWCSoap2Rest.Interfaces;
 using RXN.AspNetCore.QuickBookWCSoap2Rest.Utils;
+using System;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -24,10 +25,16 @@ namespace RXN.AspNetCore.QuickBookWCSoap2Rest
             _hanlder = hanlder;
         }
 
-        //public WCController<T>(T hanlderAsync)
-        //{
-        //    _hanlderAsync = hanlderAsync;
-        //}
+        /// <summary>
+        /// 
+        /// Recieved your custom handler implemented from IWCWebMethodAsync
+        /// 
+        /// </summary>
+        /// <param name="hanlder"></param>
+        public WCController(IWCWebMethodAsync hanlder)
+        {
+            _hanlderAsync = hanlder;
+        }
 
         /// <summary>
         /// Listen all the request from Web Connector of QuickBooks and control them to your handler
@@ -35,6 +42,11 @@ namespace RXN.AspNetCore.QuickBookWCSoap2Rest
         /// <returns></returns>
         public XElement Handle(HttpRequest request)
         {
+            if (_hanlder is null)
+            {
+                throw new NullReferenceException("Only handlers implement IWCWebMethod that could call this method!");
+            }
+
             var s2r = new WCRequestBridge(request);
             var soapAction = s2r.GetSkeletonActionMethod();
 
@@ -127,6 +139,11 @@ namespace RXN.AspNetCore.QuickBookWCSoap2Rest
 
         public async Task<XElement> HandleAsync(HttpRequest request)
         {
+            if (_hanlderAsync is null)
+            {
+                throw new NullReferenceException("Only handlers implement IWCWebMethodAsync that could call this method!");
+            }
+
             var s2r = new WCRequestBridge(request);
             var soapAction = s2r.GetSkeletonActionMethod();
 
