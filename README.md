@@ -9,25 +9,25 @@ Once upon ago, QBWC XML only support communication with Web method via SOAP. But
 Use `Package Manager` to install it.
 
 ```bash
-Install-Package RXN.AspNetCore.QuickBookWCSoap2Rest -Version 3.0.0
+Install-Package RXN.AspNetCore.QuickBookWCSoap2Rest -Version 3.3.0
 ```
 
 Or `.NET cli`
 
 ```bash
-dotnet add package RXN.AspNetCore.QuickBookWCSoap2Rest --version 3.0.0
+dotnet add package RXN.AspNetCore.QuickBookWCSoap2Rest --version 3.3.0
 ```
 
 Or `PackageReference `
 
 ```bash
-<PackageReference Include="RXN.AspNetCore.QuickBookWCSoap2Rest" Version="3.0.0" />
+<PackageReference Include="RXN.AspNetCore.QuickBookWCSoap2Rest" Version="3.3.0" />
 ```
 
 Or `Paket CLI`
 
 ```bash
-paket add RXN.AspNetCore.QuickBookWCSoap2Rest --version 3.0.0
+paket add RXN.AspNetCore.QuickBookWCSoap2Rest --version 3.3.0
 ```
 
 ## Usage
