@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Version>3.2.0</Version>
+    <Version>3.3.0</Version>
     <Authors>thangl3</Authors>
     <Company>RXN Viet Nam</Company>
     <RepositoryUrl>https://github.com/thangl3/RXN.AspNetCore.QuickBookWCSoap2Rest</RepositoryUrl>
