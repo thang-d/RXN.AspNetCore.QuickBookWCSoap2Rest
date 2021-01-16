@@ -1,4 +1,5 @@
-﻿using RXN.AspNetCore.QuickBookWCSoap2Rest.Utils;
+﻿// Copyright (C) 2013-2020 Retail Exchange Network, Inc. All rights reserved.
+using RXN.AspNetCore.QuickBookWCSoap2Rest.Utils;
 using System.Xml.Linq;
 
 namespace RXN.AspNetCore.QuickBookWCSoap2Rest.Bridges
@@ -89,13 +90,21 @@ namespace RXN.AspNetCore.QuickBookWCSoap2Rest.Bridges
                     break;
             }
 
-            Response.Add(Result);
-            Body.Add(Response);
-            Envelope.Add(Body);
+            if (Response != null && Result != null)
+            {
+                Response.Add(Result);
+                Body.Add(Response);
+                Envelope.Add(Body);
+            }
         }
 
         public XElement ResponseXml()
         {
+            if (Response is null)
+            {
+                return null;
+            }
+
             return Envelope;
         }
     }

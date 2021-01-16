@@ -49,39 +49,29 @@ namespace RXN.AspNetCore.QuickBookWCSoap2Rest.Bridges
 
         private void ParseBody(Stream body)
         {
-            try
+            string rawBody = null;
+
+            using (var reader = new StreamReader(body))
             {
-                string rawBody = null;
-
-                using (var reader = new StreamReader(body))
-                {
-                    var promiseReading = reader.ReadToEndAsync();
-                    if (promiseReading.IsCompletedSuccessfully)
-                    {
-                        rawBody = promiseReading.Result;
-                    }
-                }
-
-                if (!string.IsNullOrEmpty(rawBody))
-                {
-                    var xmlBody = new XmlDocument();
-                    xmlBody.LoadXml(rawBody);
-
-                    var soapBodyContent = xmlBody.GetElementsByTagName("soap:Body").Item(0).FirstChild;
-                    _skeletonAction = MatchingSkeletonActionMethod(soapBodyContent.Name);
-
-                    if (soapBodyContent.HasChildNodes)
-                    {
-                        foreach (XmlNode node in soapBodyContent.ChildNodes)
-                        {
-                            _requestParams.Add(node.Name.Trim(), node.InnerText.Trim());
-                        }
-                    }
-                }
+                var taskReading = reader.ReadToEndAsync();
+                rawBody = taskReading.Result;
             }
-            catch (Exception ex)
+
+            if (!string.IsNullOrEmpty(rawBody))
             {
-                throw;
+                var xmlBody = new XmlDocument();
+                xmlBody.LoadXml(rawBody);
+
+                var soapBodyContent = xmlBody.GetElementsByTagName("soap:Body").Item(0).FirstChild;
+                _skeletonAction = MatchingSkeletonActionMethod(soapBodyContent.Name);
+
+                if (soapBodyContent.HasChildNodes)
+                {
+                    foreach (XmlNode node in soapBodyContent.ChildNodes)
+                    {
+                        _requestParams.Add(node.Name.Trim(), node.InnerText.Trim());
+                    }
+                }
             }
         }
 

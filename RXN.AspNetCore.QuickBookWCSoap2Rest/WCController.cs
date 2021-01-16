@@ -127,11 +127,6 @@ namespace RXN.AspNetCore.QuickBookWCSoap2Rest
                     break;
             }
 
-            if (responseValue == null)
-            {
-                return null;
-            }
-
             var resBridge = new WCResponseBridge(soapAction, responseValue);
 
             return resBridge.ResponseXml();
@@ -266,11 +261,6 @@ namespace RXN.AspNetCore.QuickBookWCSoap2Rest
 
                 default:
                     break;
-            }
-
-            if (responseValue == null)
-            {
-                return null;
             }
 
             var resBridge = new WCResponseBridge(soapAction, responseValue);
